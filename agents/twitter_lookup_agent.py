@@ -14,38 +14,37 @@ load_dotenv()
 def lookup(name: str) -> str:
     llm = ChatOpenAI(
         temperature=0,
-        model_name='gpt-3.5-turbo',
+        model_name="gpt-3.5-turbo",
     )
-
+    
     template = """
-        given the full name {name_of_person} I want you to get it me a link to their Linkedin profile page.
-        Your answer should contain only a URL"""
-                    
+        given the name {name_of_person} I want you to find a link to their Twitter profile page, and extract from it their username
+        In Your Final answer only the person's username"""
+       
     prompt_template = PromptTemplate(
-        template=template, input_variables=['name_of_person']
+        template=template, input_variables=["name_of_person"]
     )
     
     tools_for_agent = [
         Tool(
-            name="Crawl Google 4 linkedin profile page",
+            name="Crawl Google 4 Twitter profile page",
             func=get_profile_url_tavily,
-            description="useful for when you need get the Linkedin Page URL",
+            description="useful for when you need get the Twitter Page URL",
         )
     ]
-    
+
     react_prompt = hub.pull("hwchase17/react")
     agent = create_react_agent(llm=llm, tools=tools_for_agent, prompt=react_prompt)
     agent_executor = AgentExecutor(agent=agent, tools=tools_for_agent, verbose=True)
-    
+
     result = agent_executor.invoke(
         input={"input": prompt_template.format_prompt(name_of_person=name)}
     )
-    
-    linkedin_profile_url = result['output']
-    return linkedin_profile_url
-    
-    
-    
+
+    twitter_username = result["output"]
+    return twitter_username
+
+
 if __name__ == "__main__":
-    linkedin_profile_url = lookup(name='choi hyunho')
-    print(linkedin_profile_url)
+    twitter_username = lookup(name="Elon Musk")
+    print(twitter_username)
