@@ -58,7 +58,7 @@
                         throw new Error("POST request failed");
                     })
                     .then(data => {
-                        document.getElementById("profile-pic").src = data.profile_picture_url;
+                        document.getElementById("profile-pic").src = data.profile_pic_url;
                         document.getElementById("summary").textContent = data.information.summary;
                         createHtmlList(document.getElementById("facts"), data.information.facts);
 <!--                        createHtmlList(document.getElementById("ice-breakers"), data.ice_breakers.ice_breakers);-->
