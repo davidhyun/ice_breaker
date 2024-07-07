@@ -1,5 +1,6 @@
 import os
 import requests
+import json
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -9,15 +10,14 @@ def scrape_linkedin_profile(linkedin_profile_url: str, mock: bool=False):
     """Scrape information from LinkedIn profiles
     Manually scrape the information from the LinkedIn profile
     """
-    
+
     if mock:
-        # Use request with saved gist(json)
-        linkedin_profile_url = "https://gist.github.com/davidhyun/5707a2e36fe7890377a92a2b91d1f42c"
+        # Use request with Eden Marco's pre-saved gist(json)
+        linkedin_profile_url = "https://api.github.com/gists/1c8fd9626d35844959f53425b8e18f23"
         response = requests.get(
             linkedin_profile_url,
             timeout=10
         )
-        
     else:
         # Use proxycurl (cost generated)
         api_endpoint = "https://nubela.co/proxycurl/api/v2/linkedin"
@@ -28,8 +28,9 @@ def scrape_linkedin_profile(linkedin_profile_url: str, mock: bool=False):
             headers=headers,
             timeout=10
         )
-        
+
     data = response.json()
+
     # minimize feed tokens
     data = {
         k: v
@@ -42,10 +43,8 @@ def scrape_linkedin_profile(linkedin_profile_url: str, mock: bool=False):
             group_dict.pop("profile_pic_url")
 
     return data    
-    
+
+
 if __name__ == "__main__":
-    print(
-        scrape_linkedin_profile(
-            linkedin_profile_url="https://www.linkedin.com/in/hyunh317/"
-        )
-    )
+    linkedin_profile = scrape_linkedin_profile(linkedin_profile_url="https://www.linkedin.com/in/eden-marco/", mock=True)
+    print(linkedin_profile)

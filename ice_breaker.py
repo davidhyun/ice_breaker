@@ -8,7 +8,7 @@ from agents.linkedin_lookup_agent import lookup as linkedin_lookup_agent
 
 def ice_break_with(name: str) -> str:
     linkedin_profile_url = linkedin_lookup_agent(name=name)
-    linkedin_data = scrape_linkedin_profile(linkedin_profile_url=linkedin_profile_url)
+    linkedin_data = scrape_linkedin_profile(linkedin_profile_url=linkedin_profile_url, mock=True)
     
     summary_template = """
     given the LinkedIn information {information} about a person I want you to create:
@@ -30,4 +30,4 @@ def ice_break_with(name: str) -> str:
 
 if __name__ == '__main__':
     load_dotenv() # load environment variables dynamically
-    print(ice_break_with(name="Hyunho Choi"))
+    print(ice_break_with(name="Eden Marco"))
